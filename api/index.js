@@ -58,12 +58,12 @@ mongoose
     console.error("Error connecting to MongoDB:", err.message);
   });
 
-app.post("/auth/register", register);
-// app.post("/auth/posts", verifyToken, upload.single("picture"), createPost);
-app.post("/auth/posts", verifyToken, createPost);
+app.post("/api/auth/register", register);
+// app.post("/api/auth/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/api/auth/posts", verifyToken, createPost);
 
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/posts", postRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(3001, () => console.log("Server running on port 3001"));
