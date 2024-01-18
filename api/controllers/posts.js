@@ -1,8 +1,11 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
-
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 /* CREATE */
 export const createPost = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const { userId, description, picturePath } = req.body;
     const user = await User.findById(userId);
@@ -28,6 +31,7 @@ export const createPost = async (req, res) => {
 
 /* READ */
 export const getFeedPosts = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const post = await Post.find();
     res.status(200).json(post);
@@ -37,6 +41,7 @@ export const getFeedPosts = async (req, res) => {
 };
 
 export const getUserPosts = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const { userId } = req.params;
     const post = await Post.find({ userId });
@@ -48,6 +53,7 @@ export const getUserPosts = async (req, res) => {
 
 /* UPDATE */
 export const likePost = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const { id } = req.params;
     const { userId } = req.body;

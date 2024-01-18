@@ -38,32 +38,32 @@ app.use(
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* FILE STORAGE */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({ storage });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public/assets");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+// const upload = multer({ storage });
 
-mongoose
-  .connect(process.env.MONGO_URL)
+// mongoose
+//   .connect(process.env.MONGO_URL)
 
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err.message);
-  });
+//   .then(() => {
+//     console.log("Connected to MongoDB");
+//   })
+//   .catch((err) => {
+//     console.error("Error connecting to MongoDB:", err.message);
+//   });
 
-app.post("/auth/register", register);
+app.post("/api/auth/register", register);
 // app.post("/auth/posts", verifyToken, upload.single("picture"), createPost);
-app.post("/auth/posts", verifyToken, createPost);
+app.post("/api/auth/posts", verifyToken, createPost);
 
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/posts", postRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(3001, () => console.log("Server running on port 3001"));

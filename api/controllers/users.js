@@ -1,7 +1,10 @@
 import User from "../models/User.js";
-
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 /* READ */
 export const getUser = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -12,6 +15,7 @@ export const getUser = async (req, res) => {
 };
 
 export const getUserFriends = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -32,6 +36,7 @@ export const getUserFriends = async (req, res) => {
 
 /* UPDATE */
 export const addRemoveFriend = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);

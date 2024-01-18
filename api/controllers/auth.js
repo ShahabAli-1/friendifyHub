@@ -1,10 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 // Register user
 
 export const register = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   console.log(req.body);
   try {
     const {
@@ -40,6 +43,8 @@ export const register = async (req, res) => {
 
 /* LOGGING IN */
 export const login = async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
