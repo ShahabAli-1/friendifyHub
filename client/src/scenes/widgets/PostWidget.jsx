@@ -33,8 +33,12 @@ const PostWidget = ({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
-  const likeCount = Object.keys(likes).length;
+  // const isLiked = Boolean(likes[loggedInUserId]);
+  const isLiked =
+    likes && likes[loggedInUserId] ? Boolean(likes[loggedInUserId]) : false;
+
+  // const likeCount = Object.keys(likes).length;
+  const likeCount = likes ? Object.keys(likes).length : 0;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
