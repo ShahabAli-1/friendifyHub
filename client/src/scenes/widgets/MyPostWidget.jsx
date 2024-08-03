@@ -31,11 +31,13 @@ import { setPosts } from "../../state";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import storage from "../../firebase";
+
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
@@ -44,11 +46,12 @@ const MyPostWidget = ({ picturePath }) => {
   const medium = palette.neutral.medium;
 
   const handlePost = async () => {
+    setLoading(true); // Set loading to true when the request starts
     const storageRef = ref(storage, `postsImages/${_id}/${image.name}`);
-    await uploadBytes(storageRef, image);
-    const imageUrl = await getDownloadURL(storageRef);
-
     try {
+      await uploadBytes(storageRef, image);
+      const imageUrl = await getDownloadURL(storageRef);
+
       const response = await axios.post(
         "/auth/posts",
         {
@@ -68,6 +71,8 @@ const MyPostWidget = ({ picturePath }) => {
     } catch (error) {
       // Handle error here
       console.error("Error posting:", error);
+    } finally {
+      setLoading(false); // Set loading to false after the request completes
     }
   };
 
@@ -169,15 +174,18 @@ const MyPostWidget = ({ picturePath }) => {
         )}
 
         <Button
-          disabled={!post}
+          disabled={loading || !post} // Disable the button during loading or if there's no post
           onClick={handlePost}
           sx={{
             color: palette.background.alt,
-            backgroundColor: palette.primary.main,
+            backgroundColor: loading
+              ? "#00B4D2" // Darker shade for loading state
+              : palette.primary.main, // Primary color for non-loading state
             borderRadius: "3rem",
           }}
         >
-          POST
+          {loading ? "Posting..." : "POST"}{" "}
+          {/* Change button text during loading */}
         </Button>
       </FlexBetween>
     </WidgetWrapper>
